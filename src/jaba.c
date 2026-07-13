@@ -5,21 +5,28 @@
 
 #define MAX_MEM 30000
 
+void print_help() {
+    printf("--- JabaScript Commands ---\n");
+    printf("spawn: +1 | die: -1 | leap: -> | retreat: <- | croak: print char | observe: input | drown: 0 | tadpole: +10 | bullfrog: ->5 | lilypad: space | ribbit: print num | metamorphosis: *2 | hibernation: /2 | camouflage: invert | migrate: reset | predator: rand jump | swamp_gas: rand val | reproduce: copy to next | sunbathe: +50 | render: show pond | summon: call file | gimme-pad: help | burrow: exit\n");
+    printf("Need help? Say \"gimme-pad\"\n");
+}
+
 void render(unsigned char *pond, unsigned char *frog) {
     printf("\033[H\033[J");
-    printf("--- JabaScript Live Pond ---\n");
     for (int i = 0; i < 100; i++) {
         if (&pond[i] == frog) printf("[F]");
         else if (pond[i] > 0) printf(" ~ ");
         else printf(" . ");
         if ((i + 1) % 10 == 0) printf("\n");
     }
-    printf("----------------------------\n");
 }
 
 void execute(char *filename, unsigned char *pond) {
     FILE *f = fopen(filename, "r");
-    if (!f) return;
+    if (!f) {
+        printf("Error: Could not open file '%s'. Need help? Say \"gimme-pad\"\n", filename);
+        return;
+    }
 
     unsigned char *frog = pond;
     char buffer[32];
@@ -47,13 +54,17 @@ void execute(char *filename, unsigned char *pond) {
         else if (strcmp(buffer, "render") == 0) render(pond, frog);
         else if (strcmp(buffer, "summon") == 0) {
             char lib[32];
-            fscanf(f, "%s", lib);
-            execute(lib, pond);
+            if(fscanf(f, "%s", lib) == 1) execute(lib, pond);
+            else printf("Error: Summon argument missing. Need help? Say \"gimme-pad\"\n");
         }
+        else if (strcmp(buffer, "gimme-pad") == 0) print_help();
         else if (strcmp(buffer, "burrow") == 0) break;
+        else {
+            printf("Error: '%s' is not a valid Jaba command. Need help? Say \"gimme-pad\"\n", buffer);
+        }
 
         if (frog < pond || frog >= pond + MAX_MEM) {
-            fprintf(stderr, "\n[FATAL ERROR]\n");
+            printf("Error: Frog escaped the pond! Need help? Say \"gimme-pad\"\n");
             break;
         }
     }
@@ -62,7 +73,10 @@ void execute(char *filename, unsigned char *pond) {
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
-    if (argc < 2) return 1;
+    if (argc < 2) {
+        printf("Usage: ./jaba [file.jaba]\nNeed help? Say \"gimme-pad\"\n");
+        return 1;
+    }
 
     unsigned char *pond = calloc(MAX_MEM, sizeof(unsigned char));
     execute(argv[1], pond);
