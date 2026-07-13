@@ -1,17 +1,43 @@
-        JabaScript
-JabaScript is an esoteric, swamp-inspired programming language designed for managing life cycles within a digital pond. It focuses on minimalist, behavior-based commands and modular architecture. Installation To install JabaScript and add it to your system path, run:
-
-make
-sudo make install
-  Quick Start
-Create a file named hello.jaba:
-
-spawn spawn spawn spawn spawn lilypad
-croak
-burrow
-
-Run it using the Jaba interpreter:
-
-jaba hello.jaba
-       Language Reference
-The language operates on a memory pond (array of bytes) with a frog-pointer: Life & Growth: spawn, die, tadpole, metamorphosis, hibernation, sunbathe Movement: leap, retreat, migrate, predator, bullfrog Environment: lilypad, swamp_gas, drown, camouflage, reproduce IO & Control: croak, ribbit, observe, render, summon, burrow Features Modular Architecture: Use the summon command to import external .jaba modules. Live Visualization: Use the render command to print the state of the memory pond directly to your terminal. Swamp Ecosystem: Simulated biological behaviors for data manipulation. License MIT License
+JabaScript - Мануал для виживання
+JabaScript — це мова програмування для маніпуляцій з пам'яттю (ставком).
+Чому у вас може не працювати (Читати обов'язково)
+Помилка "Permission denied":
+Якщо ви на Android (Termux), НЕ запускайте файли з папок /storage/shared/ або інших спільних папок Android. Система забороняє виконання коду там.
+Рішення: Завжди працюйте в домашній папці ~/. Скопіюйте проект командою: cp -r ~/storage/shared/jaba-lang ~/jaba-lang-home і працюйте там.
+Команда не знайдена / Помилка "Could not open file":
+Ви забули скомпілювати код або намагаєтесь викликати команду до того, як вона потрапила в системний шлях.
+Рішення: Обов'язково запустіть ./install.sh. Він сам скомпілює файл jaba.c і покладе його в $PREFIX/bin, щоб термінал бачив команду jaba.
+Команда gimme-pad не працює:
+Ви намагаєтесь викликати її як окрему програму.
+Рішення: Це внутрішня команда інтерпретатора. Використовуйте її так: jaba gimme-pad.
+Швидкий старт
+Перейдіть у домашню папку: cd ~
+Створіть папку проекту і перейдіть у неї.
+Покладіть код у src/jaba.c та скрипт у install.sh.
+Надайте права: chmod +x install.sh
+Встановіть: ./install.sh
+Перевірка: jaba gimme-pad
+Команди (довідка)
+spawn: +1
+die: -1
+leap: ->
+retreat: <-
+croak: вивести символ
+observe: ввід користувача
+drown: 0
+tadpole: +10
+bullfrog: ->5
+lilypad: пробіл
+ribbit: вивести число
+metamorphosis: *2
+hibernation: /2
+camouflage: інвертувати
+migrate: скинути позицію
+predator: випадковий стрибок
+swamp_gas: випадкове значення
+reproduce: копіювати в наступну клітинку
+sunbathe: +50
+render: показати ставок
+summon: викликати файл
+gimme-pad: довідка
+burrow: вихід
